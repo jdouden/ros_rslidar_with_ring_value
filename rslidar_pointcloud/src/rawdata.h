@@ -32,6 +32,7 @@
 #include <pcl_ros/impl/transforms.hpp>
 #include <pcl_conversions/pcl_conversions.h>
 #include <stdio.h>
+#include "point_types.h"
 namespace rslidar_rawdata
 {
 // static const float  ROTATION_SOLUTION_ = 0.18f;  //水平角分辨率 10hz
@@ -132,10 +133,10 @@ public:
   void loadConfigFile(ros::NodeHandle node, ros::NodeHandle private_nh);
 
   /*unpack the RS16 UDP packet and opuput PCL PointXYZI type*/
-  void unpack(const rslidar_msgs::rslidarPacket& pkt, pcl::PointCloud<pcl::PointXYZI>::Ptr pointcloud);
+  void unpack(const rslidar_msgs::rslidarPacket& pkt, pcl::PointCloud<custom_pointcloud::PointXYZIR>::Ptr pointcloud);
 
   /*unpack the RS32 UDP packet and opuput PCL PointXYZI type*/
-  void unpack_RS32(const rslidar_msgs::rslidarPacket& pkt, pcl::PointCloud<pcl::PointXYZI>::Ptr pointcloud);
+  void unpack_RS32(const rslidar_msgs::rslidarPacket& pkt, pcl::PointCloud<custom_pointcloud::PointXYZIR>::Ptr pointcloud);
 
   /*compute temperature*/
   float computeTemperature(unsigned char bit1, unsigned char bit2);

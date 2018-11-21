@@ -527,7 +527,7 @@ int RawData::estimateTemperature(float Temper)
  *  @param pkt raw packet to unpack
  *  @param pc shared pointer to point cloud (points are appended)
  */
-void RawData::unpack(const rslidar_msgs::rslidarPacket& pkt, pcl::PointCloud<pcl::PointXYZI>::Ptr pointcloud)
+void RawData::unpack(const rslidar_msgs::rslidarPacket& pkt, pcl::PointCloud<custom_pointcloud::PointXYZIR>::Ptr pointcloud)
 {
   if (numOfLasers == 32)
   {
@@ -615,7 +615,7 @@ void RawData::unpack(const rslidar_msgs::rslidarPacket& pkt, pcl::PointCloud<pcl
 
         float arg_horiz = (float)azimuth_corrected / 18000.0f * M_PI;
         float arg_vert = VERT_ANGLE[dsr];
-        pcl::PointXYZI point;
+        custom_pointcloud::PointXYZIR point;
 
         if (distance2 > DISTANCE_MAX || distance2 < DISTANCE_MIN)  // invalid data
         {
@@ -623,6 +623,7 @@ void RawData::unpack(const rslidar_msgs::rslidarPacket& pkt, pcl::PointCloud<pcl
           point.y = NAN;
           point.z = NAN;
           point.intensity = 0;
+          point.ring = dsr;
           pointcloud->at(2 * this->block_num + firing, dsr) = point;
         }
         else
@@ -636,6 +637,7 @@ void RawData::unpack(const rslidar_msgs::rslidarPacket& pkt, pcl::PointCloud<pcl
           point.x = distance2 * cos(arg_vert) * cos(arg_horiz);
           point.z = distance2 * sin(arg_vert);
           point.intensity = intensity;
+          point.ring = dsr;
           pointcloud->at(2 * this->block_num + firing, dsr) = point;
         }
       }
@@ -643,7 +645,7 @@ void RawData::unpack(const rslidar_msgs::rslidarPacket& pkt, pcl::PointCloud<pcl
   }
 }
 
-void RawData::unpack_RS32(const rslidar_msgs::rslidarPacket& pkt, pcl::PointCloud<pcl::PointXYZI>::Ptr pointcloud)
+void RawData::unpack_RS32(const rslidar_msgs::rslidarPacket& pkt, pcl::PointCloud<custom_pointcloud::PointXYZIR>::Ptr pointcloud)
 {
   float azimuth;  // 0.01 dgree
   float intensity;
@@ -754,7 +756,7 @@ void RawData::unpack_RS32(const rslidar_msgs::rslidarPacket& pkt, pcl::PointClou
 
       float arg_horiz = (float)azimuth_corrected / 18000.0f * M_PI;
       float arg_vert = VERT_ANGLE[dsr];
-      pcl::PointXYZI point;
+      custom_pointcloud::PointXYZIR point;
 
       if (distance2 > DISTANCE_MAX || distance2 < DISTANCE_MIN)  // invalid data
       {
@@ -762,6 +764,7 @@ void RawData::unpack_RS32(const rslidar_msgs::rslidarPacket& pkt, pcl::PointClou
         point.y = NAN;
         point.z = NAN;
         point.intensity = 0;
+        point.ring = dsr;
         pointcloud->at(this->block_num, dsr) = point;
       }
       else
@@ -775,6 +778,7 @@ void RawData::unpack_RS32(const rslidar_msgs::rslidarPacket& pkt, pcl::PointClou
         point.x = distance2 * cos(arg_vert) * cos(arg_horiz);
         point.z = distance2 * sin(arg_vert);
         point.intensity = intensity;
+        point.ring = dsr;
         pointcloud->at(this->block_num, dsr) = point;
       }
     }
