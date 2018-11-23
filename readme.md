@@ -1,6 +1,8 @@
-## ROS 32 ROBOSENSE LIDAR FOR RING VALUE
+## ROS 32 ROBOSENSE LIDAR FOR FUSION WITH VELODYNE LIDAR
 
-This package modified for generating ring value with XYZI data like velodyne one. Now it is testing.
+This package modified for generating ring value with XYZI data like velodyne one.
+
+And fixed a conflict problem when using this with velodyne.
 
 
 
